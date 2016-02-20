@@ -13,12 +13,17 @@ public class Customer {
 	List<BrandedGroceryItem> predictedGroceryList;
 
 	// map to track the highest purchase indicator for each category
-	Map<String, BrandedGroceryItem> categoryBasedInd = new HashMap<String, BrandedGroceryItem>();
+	Map<String, BrandedGroceryItem> categoryBasedInd;
+	
+	// Tabu list for disliked items
+	Map<Integer, Integer> productTabuMap;
 
 	public Customer(String customerID) {
 		groceryTracker = new ArrayList<BrandedGroceryItem>();
 		this.customerID = customerID;
 		predictedGroceryList = new ArrayList<BrandedGroceryItem>();
+		categoryBasedInd =  new HashMap<String, BrandedGroceryItem>();
+		productTabuMap = new HashMap<Integer, Integer>();
 	}
 
 	public void InitializeGroceryTracker(CassandraHelper cassandraHelper) {
@@ -65,5 +70,20 @@ public class Customer {
 			finalGroceryList.add(predictedGroceryItem.productID);
 		}
 
+	}
+	
+	public void InsertTabu(int productID) {
+		productTabuMap.put(productID, 3);
+	}
+	
+	public void DecrementTabu() {
+		for (Integer productID : productTabuMap.keySet()) {
+			productTabuMap.put(productID, productTabuMap.get(productID) - 1); 
+			
+			// no longer part of tabu, tenure used up
+			if (productTabuMap.get(productID) <= 0) {
+				productTabuMap.remove(productID);
+			}
+		}
 	}
 }

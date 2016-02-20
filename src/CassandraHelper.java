@@ -38,4 +38,9 @@ public class CassandraHelper {
 				.where(QueryBuilder.eq("product_id", productID));
 		return session.execute(statement).one();
 	}
+	
+	public void InsertFromUserProduct(String table, String customerID, int productID, double value) {
+		Statement statement = QueryBuilder.insertInto(table).value("user_id", customerID).value("product_id", productID).value("s_ema", value);
+		session.execute(statement);
+	}
 }
