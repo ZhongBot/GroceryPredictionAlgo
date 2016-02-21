@@ -12,9 +12,15 @@ public class Customer {
 	// predicted grocery list
 	List<BrandedGroceryItem> predictedGroceryList;
 
+	// grocery history for a single customer
+	List<Integer> completeGroceryList;
+
+	// grocery set for a single customer
+	Set<Integer> completeGrocerySet;
+
 	// map to track the highest purchase indicator for each category
 	Map<String, BrandedGroceryItem> categoryBasedInd;
-	
+
 	// Tabu list for disliked items
 	Map<Integer, Integer> productTabuMap;
 
@@ -22,7 +28,8 @@ public class Customer {
 		groceryTracker = new ArrayList<BrandedGroceryItem>();
 		this.customerID = customerID;
 		predictedGroceryList = new ArrayList<BrandedGroceryItem>();
-		categoryBasedInd =  new HashMap<String, BrandedGroceryItem>();
+		completeGroceryList = new ArrayList<Integer>();
+		categoryBasedInd = new HashMap<String, BrandedGroceryItem>();
 		productTabuMap = new HashMap<Integer, Integer>();
 	}
 
@@ -38,7 +45,7 @@ public class Customer {
 		}
 	}
 
-	public void AddGroceryItem(BrandedGroceryItem item) {
+	public boolean AddGroceryItem(BrandedGroceryItem item) {
 
 		if (categoryBasedInd.containsKey(item.category)) {
 			if (categoryBasedInd.get(item.category).purchaseInd <= item.purchaseInd) {
@@ -49,7 +56,7 @@ public class Customer {
 				categoryBasedInd.put(item.category, item);
 			} else {
 				// nothing to be done
-				return;
+				return false;
 			}
 
 		} else {
@@ -58,6 +65,9 @@ public class Customer {
 		}
 
 		predictedGroceryList.add(item);
+
+		// successfully added the item
+		return true;
 	}
 
 	public void RemoveGroceryItem(BrandedGroceryItem item) {
@@ -71,19 +81,32 @@ public class Customer {
 		}
 
 	}
-	
+
 	public void InsertTabu(int productID) {
 		productTabuMap.put(productID, 3);
 	}
-	
+
 	public void DecrementTabu() {
 		for (Integer productID : productTabuMap.keySet()) {
-			productTabuMap.put(productID, productTabuMap.get(productID) - 1); 
-			
+			productTabuMap.put(productID, productTabuMap.get(productID) - 1);
+
 			// no longer part of tabu, tenure used up
 			if (productTabuMap.get(productID) <= 0) {
 				productTabuMap.remove(productID);
 			}
 		}
+	}
+
+	public BrandedGroceryItem GetBrandedGroceryItem(int productID) {
+		for (BrandedGroceryItem item : groceryTracker) {
+			if (item.productID == productID) {
+				return item;
+			}
+		}
+		return null;
+	}
+
+	public void InitializeGrocerySet() {
+		completeGrocerySet = new HashSet<Integer>(this.completeGroceryList);
 	}
 }
