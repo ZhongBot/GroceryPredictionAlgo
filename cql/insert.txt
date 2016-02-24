@@ -1,0 +1,39 @@
+user fydp;
+
+-- users
+insert into fydp.users (userid, name, password, phone) values ('p8zhao@uwaterloo.ca', 'Kyle Zhao', 'AMarket123', '456454653');
+insert into fydp.users (userid, name, password, phone) values ('h86kim@uwaterloo.ca', 'Narane Narane', 'Bmarket321', '1234567890');
+insert into fydp.users (userid, name, password, phone) values ('bzhong@uwaterloo.ca', 'Botian Zhong', 'CMarket123', '2260000000');
+
+-- products
+insert into fydp.products (product_id, avg_price, brand, category, price) values (23, 350, 'Ruffles Sour Cream & Onion', 'Snacks', 375);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (5, 164, 'Spinach', 'Vegetables', 150);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (28, 900, 'Lamb Leg', 'Meat', 889);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (10, 699, 'Watermelon', 'Fruit', 599);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (16, 250, 'Dr.Pepper', 'Soft Drinks', 275);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (13, 400, 'Milk', 'Dairy', 349);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (30, 749, 'Tenderloin', 'Meat', 698);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (11, 149, 'Butter', 'Dairy', 299);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (1, 169, 'Broccoli', 'Vegetables', 199);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (19, 249, 'Sprite', 'Soft Drinks', 225);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (8, 370, 'Oranges', 'Fruit', 349);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (2, 349, 'Celery', 'Vegetables', 298);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (4, 319, 'Lettuce', 'Vegetables', 450);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (18, 199, 'Pepsi', 'Soft Drinks', 250);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (15, 199, 'Coca-Cola', 'Soft Drinks', 250);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (22, 230, 'Pringles', 'Snacks', 250);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (27, 539, 'Ham', 'Meat', 498);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (20, 420, 'Cheetos', 'Snacks', 399);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (7, 100, 'Bananas', 'Fruit',  99);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (6, 149, 'Apples', 'Fruit', 299);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (29, 799, 'T-bone', 'Meat', 599);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (9, 329, 'Pears', 'Fruit', 439);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (14, 510, 'Yogurt', 'Dairy', 489);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (26, 579, 'Chicken Breasts', 'Meat', 529);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (21, 320, 'Lay''s Salt & Vinegar', 'Snacks', 299);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (17, 249, 'Mountain Dew', 'Soft Drinks', 225);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (24, 379, 'Bacon', 'Meat', 369);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (25, 698, 'Beef Rib', 'Meat', 550);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (12, 189, 'Cheese', 'Dairy', 199);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (3, 89, 'Cucumber', 'Vegetables',  99);
+

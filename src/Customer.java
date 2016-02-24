@@ -32,7 +32,31 @@ public class Customer {
 		categoryBasedInd = new HashMap<String, BrandedGroceryItem>();
 		productTabuMap = new HashMap<Integer, Integer>();
 	}
+	
+	public String GetCustomerID() {
+		return this.customerID;
+	}
+	
+	public List<BrandedGroceryItem> GetGroceryTracker() {
+		return this.groceryTracker;
+	}
 
+	public List<Integer> GetCompleteGroceryList() {
+		return this.completeGroceryList;
+	}
+	
+	public Map<Integer, Integer> GetProductTabuMap() {
+		return this.productTabuMap;
+	}
+	
+	public List<BrandedGroceryItem> GetPredictedGroceryList() {
+		return this.predictedGroceryList;
+	}
+	
+	public Set<Integer> GetCompleteGrocerySet() {
+		return this.completeGrocerySet;
+	}
+	
 	public void InitializeGroceryTracker(CassandraHelper cassandraHelper) {
 		Iterator<Row> inventoryRowIter = cassandraHelper.SelectAllFromUser("inventory", this.customerID);
 
@@ -47,13 +71,13 @@ public class Customer {
 
 	public boolean AddGroceryItem(BrandedGroceryItem item) {
 
-		if (categoryBasedInd.containsKey(item.category)) {
-			if (categoryBasedInd.get(item.category).purchaseInd <= item.purchaseInd) {
+		if (categoryBasedInd.containsKey(item.GetCategory())) {
+			if (categoryBasedInd.get(item.GetCategory()).GetPurchaseInd() <= item.GetPurchaseInd()) {
 				// remove lesser ind item
-				RemoveGroceryItem(categoryBasedInd.get(item.category));
+				RemoveGroceryItem(categoryBasedInd.get(item.GetCategory()));
 
 				// put higher ind item
-				categoryBasedInd.put(item.category, item);
+				categoryBasedInd.put(item.GetCategory(), item);
 			} else {
 				// nothing to be done
 				return false;
@@ -61,7 +85,7 @@ public class Customer {
 
 		} else {
 			// not item in list of that category, simply add
-			categoryBasedInd.put(item.category, item);
+			categoryBasedInd.put(item.GetCategory(), item);
 		}
 
 		predictedGroceryList.add(item);
@@ -77,7 +101,7 @@ public class Customer {
 	public void SubmitGroceryList() {
 		List<Integer> finalGroceryList = new ArrayList<Integer>();
 		for (BrandedGroceryItem predictedGroceryItem : predictedGroceryList) {
-			finalGroceryList.add(predictedGroceryItem.productID);
+			finalGroceryList.add(predictedGroceryItem.GetProductID());
 		}
 
 	}
@@ -99,7 +123,7 @@ public class Customer {
 
 	public BrandedGroceryItem GetBrandedGroceryItem(int productID) {
 		for (BrandedGroceryItem item : groceryTracker) {
-			if (item.productID == productID) {
+			if (item.GetProductID() == productID) {
 				return item;
 			}
 		}

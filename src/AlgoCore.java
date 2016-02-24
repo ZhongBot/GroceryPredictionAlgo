@@ -35,24 +35,24 @@ public class AlgoCore {
 
 	public void InitializeProductMap() {
 		// get all product id for each category
-		for (BrandedGroceryItem item : customerList.get(0).groceryTracker) {
+		for (BrandedGroceryItem item : customerList.get(0).GetGroceryTracker()) {
 
-			if (categoricalProductMap.containsKey(item.category)) {
-				categoricalProductMap.get(item.category).add(item.productID);
+			if (categoricalProductMap.containsKey(item.GetCategory())) {
+				categoricalProductMap.get(item.GetCategory()).add(item.GetProductID());
 			} else {
 				List<Integer> categoricalProductList = new ArrayList<Integer>();
-				categoricalProductList.add(item.productID);
-				categoricalProductMap.put(item.category, categoricalProductList);
+				categoricalProductList.add(item.GetProductID());
+				categoricalProductMap.put(item.GetCategory(), categoricalProductList);
 			}
 
 		}
 	}
 
 	public void InitializePrevGroceryLists(Customer customer) {
-		Iterator<Row> groceryListRowIter = cassandraHelper.SelectAllFromUser("shoppinglists", customer.customerID);
+		Iterator<Row> groceryListRowIter = cassandraHelper.SelectAllFromUser("shoppinglists", customer.GetCustomerID());
 		while (groceryListRowIter.hasNext()) {
 			Row groceryListRow = groceryListRowIter.next();
-			customer.completeGroceryList.addAll(groceryListRow.getList("products", Integer.class));
+			customer.GetCompleteGroceryList().addAll(groceryListRow.getList("products", Integer.class));
 		}
 
 		customer.InitializeGrocerySet();
@@ -140,7 +140,7 @@ public class AlgoCore {
 
 	public void CalcPurchaseInd(Customer customer) {
 		int groceryIndex = 0;
-		for (BrandedGroceryItem brandedGroceryItem : customer.groceryTracker) {
+		for (BrandedGroceryItem brandedGroceryItem : customer.GetGroceryTracker()) {
 			double inv = CalcInventory(customer, brandedGroceryItem, groceryIndex);
 			double t = CalcThreshold(customer, brandedGroceryItem);
 			double s = CalcSatisfaction(customer, brandedGroceryItem);
@@ -149,7 +149,7 @@ public class AlgoCore {
 
 			double purchaseInd = 1 / (inv - t) * s * (l + p);
 
-			brandedGroceryItem.purchaseInd = purchaseInd;
+			brandedGroceryItem.SetPurchaseInd(purchaseInd);
 
 			groceryIndex++;
 
@@ -159,7 +159,7 @@ public class AlgoCore {
 	}
 
 	public double CalcInventory(Customer customer, BrandedGroceryItem brandedGroceryItem, int groceryIndex) {
-		double inv = customer.groceryTracker.get(groceryIndex).inventory;
+		double inv = customer.GetGroceryTracker().get(groceryIndex).GetInventory();
 		return inv;
 	}
 
@@ -169,16 +169,16 @@ public class AlgoCore {
 		double t = 0.0;
 
 		// calculate consumption based on point of purchase
-		Iterator<Row> cSWRowIter = cassandraHelper.SelectAllFromUserProduct("consumption", customer.customerID,
-				brandedGroceryItem.productID);
+		Iterator<Row> cSWRowIter = cassandraHelper.SelectAllFromUserProduct("consumption", customer.GetCustomerID(),
+				brandedGroceryItem.GetProductID());
 		if (cSWRowIter.hasNext()) {
 			Row cSWRow = cSWRowIter.next();
 			cSW = cSWRow.getInt("quantity_purchased") / (double) cSWRow.getInt("days_elapsed");
 		}
 
 		// calculate consumption based on consumption tracking hardware
-		Iterator<Row> cHWRowIter = cassandraHelper.SelectAllFromUserProduct("consumption_freq", customer.customerID,
-				brandedGroceryItem.productID);
+		Iterator<Row> cHWRowIter = cassandraHelper.SelectAllFromUserProduct("consumption_freq", customer.GetCustomerID(),
+				brandedGroceryItem.GetProductID());
 		int cHWCount = 0;
 		DateTime startDate = new DateTime();
 		DateTime endDate = new DateTime();
@@ -213,15 +213,15 @@ public class AlgoCore {
 
 		// get previous ema
 		Iterator<Row> satisfactionRowIter = cassandraHelper.SelectAllFromUserProduct("satisfaction",
-				customer.customerID, brandedGroceryItem.productID);
+				customer.GetCustomerID(), brandedGroceryItem.GetProductID());
 		if (satisfactionRowIter.hasNext()) {
 			Row satisfactionRow = satisfactionRowIter.next();
 			sEMA = satisfactionRow.getDouble("s_ema");
 		}
 
 		// get latest satisfaction
-		satisfactionRowIter = cassandraHelper.SelectAllFromUserProduct("satisfaction_current", customer.customerID,
-				brandedGroceryItem.productID);
+		satisfactionRowIter = cassandraHelper.SelectAllFromUserProduct("satisfaction_current", customer.GetCustomerID(),
+				brandedGroceryItem.GetProductID());
 		if (satisfactionRowIter.hasNext()) {
 			Row satisfactionRow = satisfactionRowIter.next();
 			currentRating = satisfactionRow.getDouble("rating");
@@ -229,16 +229,16 @@ public class AlgoCore {
 
 		// insert into tabu list
 		if (currentRating == 0) {
-			customer.InsertTabu(brandedGroceryItem.productID);
+			customer.InsertTabu(brandedGroceryItem.GetProductID());
 		}
 
 		sEMA = currentRating * alpha + sEMA * (1 - alpha);
 
 		// store latest ema
-		cassandraHelper.InsertFromUserProduct("satisfaction", customer.customerID, brandedGroceryItem.productID, sEMA);
+		cassandraHelper.InsertFromUserProduct("satisfaction", customer.GetCustomerID(), brandedGroceryItem.GetProductID(), sEMA);
 
-		if (customer.productTabuMap.keySet().contains(brandedGroceryItem.productID)) {
-			s = sEMA - customer.productTabuMap.get(brandedGroceryItem.productID) / 8.0;
+		if (customer.GetProductTabuMap().keySet().contains(brandedGroceryItem.GetProductID())) {
+			s = sEMA - customer.GetProductTabuMap().get(brandedGroceryItem.GetProductID()) / 8.0;
 		} else {
 			s = sEMA;
 		}
@@ -250,17 +250,17 @@ public class AlgoCore {
 
 		double l = 0.0;
 
-		List<Integer> categoricalProductList = categoricalProductMap.get(brandedGroceryItem.category);
+		List<Integer> categoricalProductList = categoricalProductMap.get(brandedGroceryItem.GetCategory());
 
 		int categoryCount = 0;
 		int loyalStreak = 0;
 		int p = 0;
 		int prevProductID = 0;
-		for (int productID : customer.completeGroceryList) {
+		for (int productID : customer.GetCompleteGroceryList()) {
 			// only interested in the current category
 			if (categoricalProductList.contains(productID)) {
 				// check the longest streak that is not the current product
-				if (productID == prevProductID && productID != brandedGroceryItem.productID) {
+				if (productID == prevProductID && productID != brandedGroceryItem.GetProductID()) {
 					loyalStreak++;
 				} else {
 					if (loyalStreak > p) {
@@ -273,14 +273,14 @@ public class AlgoCore {
 			}
 		}
 
-		double freq = (double) Collections.frequency(customer.completeGroceryList, brandedGroceryItem.productID);
+		double freq = (double) Collections.frequency(customer.GetCompleteGroceryList(), brandedGroceryItem.GetProductID());
 		l = (freq + p / 2) / (double) categoryCount;
 
 		return l;
 	}
 
 	public double CalcPromotion(Customer customer, BrandedGroceryItem brandedGroceryItem) {
-		double p = 1 - brandedGroceryItem.price / brandedGroceryItem.avgPrice;
+		double p = 1 - brandedGroceryItem.GetPrice() / brandedGroceryItem.GetAvgPrice();
 		if (p < 0.3) {
 			return 0;
 		} else {
@@ -289,9 +289,9 @@ public class AlgoCore {
 	}
 
 	public void ConstructHabitGroceryList(Customer customer) {
-		for (BrandedGroceryItem item : customer.groceryTracker) {
+		for (BrandedGroceryItem item : customer.GetGroceryTracker()) {
 			Iterator<Row> purchaseIndRowIter = cassandraHelper.SelectAllFromUserProduct("purchase_ind",
-					customer.customerID, item.productID);
+					customer.GetCustomerID(), item.GetProductID());
 			int totalCount = 0;
 			double total = 0.0;
 			double sqTotal = 0.0;
@@ -313,7 +313,7 @@ public class AlgoCore {
 
 			pb = avg + sd;
 
-			if (item.purchaseInd > pb) {
+			if (item.GetPurchaseInd() > pb) {
 				customer.AddGroceryItem(item);
 			}
 		}
@@ -333,16 +333,16 @@ public class AlgoCore {
 		Collections.sort(similarityIndexList, similarityOrdering);
 
 		for (Map.Entry<ItemPair, Double> itemPairEntry : similarityIndexList) {
-			if (customer.predictedGroceryList.contains(itemPairEntry.getKey().p1)
-					&& !(customer.predictedGroceryList.contains(itemPairEntry.getKey().p2))) {
-				if (customer.AddGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().p2))) {
+			if (customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP1())
+					&& !(customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP2()))) {
+				if (customer.AddGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP2()))) {
 					// successfully added new explore item
 					return;
 				}
 
-			} else if (customer.predictedGroceryList.contains(itemPairEntry.getKey().p2)
-					&& !(customer.predictedGroceryList.contains(itemPairEntry.getKey().p1))) {
-				if (customer.AddGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().p1))) {
+			} else if (customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP2())
+					&& !(customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP1()))) {
+				if (customer.AddGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP1()))) {
 					return;
 				}
 			}
@@ -354,10 +354,10 @@ public class AlgoCore {
 		Random randGenerator = new Random();
 
 		// make a copy
-		Set<Integer> c1GrocerySet = c1.completeGrocerySet;
+		Set<Integer> c1GrocerySet = c1.GetCompleteGrocerySet();
 
 		for (Customer c2 : customerList) {
-			Set<Integer> c2GrocerySet = c2.completeGrocerySet;
+			Set<Integer> c2GrocerySet = c2.GetCompleteGrocerySet();
 
 			if (c1 != c2) {
 				int s1 = c1GrocerySet.size();
@@ -371,8 +371,8 @@ public class AlgoCore {
 
 			if (randGenerator.nextDouble() < pr) {
 				// reset grocery sets
-				c1GrocerySet = c1.completeGrocerySet;
-				c2GrocerySet = c2.completeGrocerySet;
+				c1GrocerySet = c1.GetCompleteGrocerySet();
+				c2GrocerySet = c2.GetCompleteGrocerySet();
 
 				// items in c2 not in c2
 				c2GrocerySet.removeAll(c1GrocerySet);

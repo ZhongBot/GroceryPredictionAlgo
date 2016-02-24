@@ -27,12 +27,44 @@ public class BrandedGroceryItem {
 		purchaseInd = 0.0;
 		purchaseBarrier = 0.0;
 	}
+	
+	public int GetProductID() {
+		return this.productID;
+	}
+	
+	public double GetAvgPrice() {
+		return this.avgPrice;
+	}
+	
+	public double GetPrice() {
+		return this.price;
+	}
 
+	public String GetBrand() {
+		return this.brand;
+	}
+	
+	public String GetCategory() {
+		return this.category;
+	}
+	
+	public double GetInventory() {
+		return this.inventory;
+	}
+	
+	public double GetPurchaseInd() {
+		return this.purchaseInd;
+	}
+	
+	public double GetPurchaseBarrier() {
+		return this.purchaseBarrier;
+	}
+	
 	public void CalcPurchaseBarrier() {
 		purchaseBarrier = 0.0;
 	}
 
-	public void SetPurchaseIndicator(double purchaseInd) {
+	public void SetPurchaseInd(double purchaseInd) {
 		this.purchaseInd = purchaseInd;
 	}
 }

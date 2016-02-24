@@ -7,6 +7,14 @@ public class ItemPair {
 		this.p2 = p2;
 	}
 
+	public int GetP1() {
+		return this.p1;
+	}
+	
+	public int GetP2() {
+		return this.p2;
+	}
+	
 	public boolean Compare(ItemPair customerPair) {
 		if (customerPair.p1 == this.p1 && customerPair.p2 == this.p2) {
 			return true;
