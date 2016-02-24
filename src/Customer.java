@@ -32,11 +32,11 @@ public class Customer {
 		categoryBasedInd = new HashMap<String, BrandedGroceryItem>();
 		productTabuMap = new HashMap<Integer, Integer>();
 	}
-	
+
 	public String GetCustomerID() {
 		return this.customerID;
 	}
-	
+
 	public List<BrandedGroceryItem> GetGroceryTracker() {
 		return this.groceryTracker;
 	}
@@ -44,19 +44,19 @@ public class Customer {
 	public List<Integer> GetCompleteGroceryList() {
 		return this.completeGroceryList;
 	}
-	
+
 	public Map<Integer, Integer> GetProductTabuMap() {
 		return this.productTabuMap;
 	}
-	
+
 	public List<BrandedGroceryItem> GetPredictedGroceryList() {
 		return this.predictedGroceryList;
 	}
-	
+
 	public Set<Integer> GetCompleteGrocerySet() {
 		return this.completeGrocerySet;
 	}
-	
+
 	public void InitializeGroceryTracker(CassandraHelper cassandraHelper) {
 		Iterator<Row> inventoryRowIter = cassandraHelper.SelectAllFromUser("inventory", this.customerID);
 

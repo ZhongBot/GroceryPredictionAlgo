@@ -177,8 +177,8 @@ public class AlgoCore {
 		}
 
 		// calculate consumption based on consumption tracking hardware
-		Iterator<Row> cHWRowIter = cassandraHelper.SelectAllFromUserProduct("consumption_freq", customer.GetCustomerID(),
-				brandedGroceryItem.GetProductID());
+		Iterator<Row> cHWRowIter = cassandraHelper.SelectAllFromUserProduct("consumption_freq",
+				customer.GetCustomerID(), brandedGroceryItem.GetProductID());
 		int cHWCount = 0;
 		DateTime startDate = new DateTime();
 		DateTime endDate = new DateTime();
@@ -235,7 +235,8 @@ public class AlgoCore {
 		sEMA = currentRating * alpha + sEMA * (1 - alpha);
 
 		// store latest ema
-		cassandraHelper.InsertFromUserProduct("satisfaction", customer.GetCustomerID(), brandedGroceryItem.GetProductID(), sEMA);
+		cassandraHelper.InsertFromUserProduct("satisfaction", customer.GetCustomerID(),
+				brandedGroceryItem.GetProductID(), sEMA);
 
 		if (customer.GetProductTabuMap().keySet().contains(brandedGroceryItem.GetProductID())) {
 			s = sEMA - customer.GetProductTabuMap().get(brandedGroceryItem.GetProductID()) / 8.0;
@@ -273,7 +274,8 @@ public class AlgoCore {
 			}
 		}
 
-		double freq = (double) Collections.frequency(customer.GetCompleteGroceryList(), brandedGroceryItem.GetProductID());
+		double freq = (double) Collections.frequency(customer.GetCompleteGroceryList(),
+				brandedGroceryItem.GetProductID());
 		l = (freq + p / 2) / (double) categoryCount;
 
 		return l;
