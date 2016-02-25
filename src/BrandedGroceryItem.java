@@ -17,8 +17,8 @@ public class BrandedGroceryItem {
 
 	public BrandedGroceryItem(Row groceryInfo) {
 		productID = groceryInfo.getInt("product_id");
-		avgPrice = groceryInfo.getInt("avg_price") / 100.0;
-		price = groceryInfo.getInt("price") / 100.0;
+		avgPrice = groceryInfo.getDouble("avg_price") / 100.0;
+		price = groceryInfo.getDouble("price") / 100.0;
 		brand = groceryInfo.getString("brand");
 		category = groceryInfo.getString("category");
 
@@ -60,11 +60,16 @@ public class BrandedGroceryItem {
 		return this.purchaseBarrier;
 	}
 
-	public void CalcPurchaseBarrier() {
-		purchaseBarrier = 0.0;
+	public void SetPurchaseBarrier(double purchaseBarrier) {
+		this.purchaseBarrier = purchaseBarrier;
 	}
 
 	public void SetPurchaseInd(double purchaseInd) {
 		this.purchaseInd = purchaseInd;
+	}
+	
+	@Override
+	public String toString() {
+	    return Integer.toString(this.productID);
 	}
 }

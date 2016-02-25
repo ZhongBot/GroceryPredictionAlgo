@@ -46,21 +46,33 @@ public class AlgoCore {
 			}
 
 		}
+
+		System.out.println("INFO - categoricalProductMap " + categoricalProductMap.toString());
 	}
 
-	public void InitializePrevGroceryLists(Customer customer) {
-		Iterator<Row> groceryListRowIter = cassandraHelper.SelectAllFromUser("shoppinglists", customer.GetCustomerID());
-		while (groceryListRowIter.hasNext()) {
-			Row groceryListRow = groceryListRowIter.next();
-			customer.GetCompleteGroceryList().addAll(groceryListRow.getList("products", Integer.class));
-		}
+	public void InitializePrevGroceryLists() {
+		for (Customer customer : customerList) {
+			Iterator<Row> groceryListRowIter = cassandraHelper.SelectAllFromUser("shoppinglists",
+					customer.GetCustomerID());
+			while (groceryListRowIter.hasNext()) {
+				Row groceryListRow = groceryListRowIter.next();
+				customer.GetCompleteGroceryList().addAll(groceryListRow.getList("products", Integer.class));
+			}
 
-		customer.InitializeGrocerySet();
+			System.out.println("INFO - customer " + customer.customerID + " completeGroceryList "
+					+ customer.GetCompleteGroceryList().toString());
+
+			customer.InitializeGrocerySet();
+
+			System.out.println("INFO - customer " + customer.customerID + " grocerySet "
+					+ customer.GetCompleteGrocerySet().toString());
+		}
 	}
 
 	public void CalcItemSimilarityIndex() {
 		int maxFreq = 0;
 		int totalItems = 0;
+		boolean found = false;
 
 		Iterator<Row> groceryListRowIter = cassandraHelper.SelectAll("shoppinglists");
 		Map<Integer, Integer> productFreqMap = new HashMap<Integer, Integer>();
@@ -77,6 +89,8 @@ public class AlgoCore {
 			}
 		}
 
+		System.out.println("INFO - productFreqMap " + productFreqMap.toString());
+
 		Predicate<Integer> productFreqFilter = new Predicate<Integer>() {
 
 			@Override
@@ -88,7 +102,11 @@ public class AlgoCore {
 		// prune
 		Map<Integer, Integer> filteredFreqMap = Maps.filterValues(productFreqMap, productFreqFilter);
 
+		System.out.println("INFO - filteredFreqMap " + filteredFreqMap.toString());
+
 		Set<Integer> productSet = filteredFreqMap.keySet();
+
+		System.out.println("INFO - productSet " + productSet.toString());
 
 		// count item pairs that are not pruned out
 		groceryListRowIter = cassandraHelper.SelectAll("shoppinglists");
@@ -112,17 +130,26 @@ public class AlgoCore {
 								itemPair = new ItemPair(p2, p1);
 							}
 
-							if (productPairFreqMap.containsKey(itemPair)) {
-								productPairFreqMap.put(itemPair, productFreqMap.get(itemPair) + 1);
-							} else {
+							for (ItemPair i : productPairFreqMap.keySet()) {
+								if (i.Compare(itemPair)) {
+									productPairFreqMap.put(i, productPairFreqMap.get(i) + 1);
+									found = true;
+								}
+							}
+
+							if (!found) {
 								productPairFreqMap.put(itemPair, 1);
 							}
+
+							found = false;
 						}
 					}
 
 				}
 			}
 		}
+
+		System.out.println("INFO - totalItems " + totalItems);
 
 		for (int freqCount : productPairFreqMap.values()) {
 			if (freqCount > maxFreq) {
@@ -136,20 +163,35 @@ public class AlgoCore {
 			double sim = 0.5 * pairFreq * (1.0 / maxFreq + 1.0 / totalItems);
 			similarityIndexMap.put(itemPair, sim);
 		}
+
+		System.out.println("INFO - similarityIndexMap " + similarityIndexMap.toString());
 	}
 
 	public void CalcPurchaseInd(Customer customer) {
 		int groceryIndex = 0;
 		for (BrandedGroceryItem brandedGroceryItem : customer.GetGroceryTracker()) {
 			double inv = CalcInventory(customer, brandedGroceryItem, groceryIndex);
+			System.out.println("INFO - customer " + customer.customerID + " product "
+					+ brandedGroceryItem.GetProductID() + " inventory " + inv);
 			double t = CalcThreshold(customer, brandedGroceryItem);
+			System.out.println("INFO - customer " + customer.customerID + " product "
+					+ brandedGroceryItem.GetProductID() + " t " + t);
 			double s = CalcSatisfaction(customer, brandedGroceryItem);
+			System.out.println("INFO - customer " + customer.customerID + " product "
+					+ brandedGroceryItem.GetProductID() + " s " + s);
 			double l = CalcLoyalty(customer, brandedGroceryItem);
+			System.out.println("INFO - customer " + customer.customerID + " product "
+					+ brandedGroceryItem.GetProductID() + " l " + l);
 			double p = CalcPromotion(customer, brandedGroceryItem);
+			System.out.println("INFO - customer " + customer.customerID + " product "
+					+ brandedGroceryItem.GetProductID() + " p " + p);
 
 			double purchaseInd = 1 / (inv - t) * s * (l + p);
 
 			brandedGroceryItem.SetPurchaseInd(purchaseInd);
+
+			System.out.println("INFO - customer " + customer.customerID + " product "
+					+ brandedGroceryItem.GetProductID() + " purchase indicator " + brandedGroceryItem.GetPurchaseInd());
 
 			groceryIndex++;
 
@@ -166,6 +208,7 @@ public class AlgoCore {
 	public double CalcThreshold(Customer customer, BrandedGroceryItem brandedGroceryItem) {
 		double cHW = 0.0;
 		double cSW = 0.0;
+		double d = 0.0;
 		double t = 0.0;
 
 		// calculate consumption based on point of purchase
@@ -193,13 +236,19 @@ public class AlgoCore {
 			cHWCount++;
 		}
 
-		cHW = cHWCount / (double) Days.daysBetween(startDate, endDate).getDays();
+		d = (double) Days.daysBetween(startDate, endDate).getDays();
+		if (Double.compare(d, 0.0) != 0) {
+			cHW = cHWCount / d;
+		}
 
 		if (cSW == 0.0) {
 			return cHW;
 		} else if (cHW == 0.0) {
 			return cSW;
 		}
+
+		System.out.println("INFO - customer " + customer.customerID + " product " + brandedGroceryItem.GetProductID()
+				+ " cSW " + cSW + " cHW " + cHW);
 
 		t = 0.5 * (cSW + cHW) * 2;
 		return t;
@@ -208,7 +257,7 @@ public class AlgoCore {
 	public double CalcSatisfaction(Customer customer, BrandedGroceryItem brandedGroceryItem) {
 		double alpha = 2.0 / (5.0 + 1.0);
 		double sEMA = 0.0;
-		double currentRating = 0.0;
+		double currentRating = -1.0;
 		double s = 0.0;
 
 		// get previous ema
@@ -227,23 +276,26 @@ public class AlgoCore {
 			currentRating = satisfactionRow.getDouble("rating");
 		}
 
-		// insert into tabu list
-		if (currentRating == 0) {
-			customer.InsertTabu(brandedGroceryItem.GetProductID());
-		}
+		if (currentRating >= 0.0) {
+			// insert into tabu list
+			if (currentRating == 0) {
+				customer.InsertTabu(brandedGroceryItem.GetProductID());
+			}
 
-		sEMA = currentRating * alpha + sEMA * (1 - alpha);
+			sEMA = currentRating * alpha + sEMA * (1 - alpha);
 
-		// store latest ema
-		cassandraHelper.InsertFromUserProduct("satisfaction", customer.GetCustomerID(),
-				brandedGroceryItem.GetProductID(), sEMA);
+			// store latest ema
+			cassandraHelper.InsertFromUserProduct("satisfaction", customer.GetCustomerID(),
+					brandedGroceryItem.GetProductID(), "s_ema", sEMA);
 
-		if (customer.GetProductTabuMap().keySet().contains(brandedGroceryItem.GetProductID())) {
-			s = sEMA - customer.GetProductTabuMap().get(brandedGroceryItem.GetProductID()) / 8.0;
+			if (customer.GetProductTabuMap().keySet().contains(brandedGroceryItem.GetProductID())) {
+				s = sEMA - customer.GetProductTabuMap().get(brandedGroceryItem.GetProductID()) / 8.0;
+			} else {
+				s = sEMA;
+			}
 		} else {
 			s = sEMA;
 		}
-
 		return s;
 	}
 
@@ -261,7 +313,8 @@ public class AlgoCore {
 			// only interested in the current category
 			if (categoricalProductList.contains(productID)) {
 				// check the longest streak that is not the current product
-				if (productID == prevProductID && productID != brandedGroceryItem.GetProductID()) {
+				if ((categoryCount == 0 || productID == prevProductID)
+						&& productID != brandedGroceryItem.GetProductID()) {
 					loyalStreak++;
 				} else {
 					if (loyalStreak > p) {
@@ -276,13 +329,20 @@ public class AlgoCore {
 
 		double freq = (double) Collections.frequency(customer.GetCompleteGroceryList(),
 				brandedGroceryItem.GetProductID());
-		l = (freq + p / 2) / (double) categoryCount;
+
+		if (categoryCount != 0) {
+			l = (freq + p / 2) / (double) categoryCount;
+		}
+
+		System.out.println("INFO - customer " + customer.customerID + " product " + brandedGroceryItem.GetProductID()
+				+ " freq " + freq + " categoryCount " + categoryCount);
 
 		return l;
 	}
 
 	public double CalcPromotion(Customer customer, BrandedGroceryItem brandedGroceryItem) {
-		double p = 1 - brandedGroceryItem.GetPrice() / brandedGroceryItem.GetAvgPrice();
+		double p = 1.0 - brandedGroceryItem.GetPrice() / brandedGroceryItem.GetAvgPrice();
+
 		if (p < 0.3) {
 			return 0;
 		} else {
@@ -294,6 +354,7 @@ public class AlgoCore {
 		for (BrandedGroceryItem item : customer.GetGroceryTracker()) {
 			Iterator<Row> purchaseIndRowIter = cassandraHelper.SelectAllFromUserProduct("purchase_ind",
 					customer.GetCustomerID(), item.GetProductID());
+
 			int totalCount = 0;
 			double total = 0.0;
 			double sqTotal = 0.0;
@@ -309,16 +370,25 @@ public class AlgoCore {
 				totalCount++;
 			}
 
-			avg = total / (double) totalCount;
-			var = sqTotal / totalCount - Math.pow(avg, 2);
-			sd = Math.sqrt(var);
+			if (totalCount > 0) {
+				avg = total / (double) totalCount;
+				var = sqTotal / totalCount - Math.pow(avg, 2);
+				sd = Math.sqrt(var);
+			}
 
 			pb = avg + sd;
+			item.SetPurchaseBarrier(pb);
+
+			System.out.println("INFO - customer " + customer.customerID + " product " + item.productID
+					+ " purchase ind " + item.GetPurchaseInd() + " pb " + item.GetPurchaseBarrier());
 
 			if (item.GetPurchaseInd() > pb) {
 				customer.AddGroceryItem(item);
 			}
 		}
+
+		System.out.println("INFO - customer " + customer.customerID + " habitual grocery list "
+				+ customer.GetPredictedGroceryList());
 
 	}
 
@@ -339,12 +409,16 @@ public class AlgoCore {
 					&& !(customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP2()))) {
 				if (customer.AddGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP2()))) {
 					// successfully added new explore item
+					System.out.println("INFO - customer " + customer.customerID + " added apriori item "
+							+ itemPairEntry.getKey().GetP2());
 					return;
 				}
 
 			} else if (customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP2())
 					&& !(customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP1()))) {
 				if (customer.AddGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP1()))) {
+					System.out.println("INFO - customer " + customer.customerID + " added apriori item "
+							+ itemPairEntry.getKey().GetP1());
 					return;
 				}
 			}
@@ -361,7 +435,7 @@ public class AlgoCore {
 		for (Customer c2 : customerList) {
 			Set<Integer> c2GrocerySet = c2.GetCompleteGrocerySet();
 
-			if (c1 != c2) {
+			if (c1.GetCustomerID() != c2.GetCustomerID()) {
 				int s1 = c1GrocerySet.size();
 				int s2 = c2GrocerySet.size();
 
@@ -378,11 +452,14 @@ public class AlgoCore {
 
 				// items in c2 not in c2
 				c2GrocerySet.removeAll(c1GrocerySet);
+				
+				System.out.println("INFO - customer " + c1.customerID + " choose item from " + c2.customerID + " list " + c2GrocerySet.toString());
 				List<Integer> c2GroceryList = new ArrayList<Integer>(c2GrocerySet);
 				Collections.shuffle(c2GroceryList);
 
 				// add a random item in c2 not in c1
 				if (c1.AddGroceryItem(c1.GetBrandedGroceryItem(c2GroceryList.get(0)))) {
+					System.out.println("INFO - customer " + c1.customerID + " PSO item " + c2GroceryList.get(0));
 					return;
 				}
 			}
@@ -390,26 +467,37 @@ public class AlgoCore {
 
 	}
 
-	public void main(String[] args) {
+	public List<Customer> GetCustomerList() {
+		return this.customerList;
+	}
+
+	public CassandraHelper GetCassandraHelper() {
+		return this.cassandraHelper;
+	}
+
+	public static void main(String[] args) {
 		int signal = 0;
+		AlgoCore algoCore = new AlgoCore();
 
-		InitializeCustomerList();
-		InitializeProductMap();
+		algoCore.InitializeCustomerList();
 
-		CalcItemSimilarityIndex();
+		algoCore.InitializeProductMap();
+
+		algoCore.InitializePrevGroceryLists();
+
+		algoCore.CalcItemSimilarityIndex();
 
 		while (signal == 0) {
-			for (Customer customer : customerList) {
-
-				InitializePrevGroceryLists(customer);
-				CalcPurchaseInd(customer);
-				ConstructHabitGroceryList(customer);
-				ExploreApriori(customer);
-				ExplorePSO(customer);
-
+			for (Customer customer : algoCore.GetCustomerList()) {
+				algoCore.CalcPurchaseInd(customer);
+				algoCore.ConstructHabitGroceryList(customer);
+				algoCore.ExploreApriori(customer);
+				algoCore.ExplorePSO(customer);
+				signal = 1;
 			}
 
 		}
-		cassandraHelper.Shutdown();
+
+		algoCore.GetCassandraHelper().Shutdown();
 	}
 }

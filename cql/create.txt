@@ -8,47 +8,47 @@ CREATE TABLE fydp.products (
 );
 
 CREATE TABLE fydp.inventory (
-    user_id text,
+    userid text,
 	product_id int,
 	inventory counter,
-	primary key (user_id, product_id)
+	primary key (userid, product_id)
 );
 
 CREATE TABLE fydp.satisfaction (
-    user_id text,
+    userid text,
 	product_id int,
 	s_ema double,
-	primary key (user_id, product_id)
+	primary key (userid, product_id)
 );
 
 CREATE TABLE fydp.satisfaction_current (
-    user_id text,
+    userid text,
 	product_id int,
 	rating double,
-	primary key (user_id, product_id)
+	primary key (userid, product_id)
 );
 
 CREATE TABLE fydp.consumption (
-    user_id text,
+    userid text,
 	product_id int,
 	days_elapsed int,
 	quantity_purchased int,
-	primary key (user_id, product_id)
+	primary key (userid, product_id)
 );
 
 CREATE TABLE fydp.consumption_freq (
-    user_id text,
+    userid text,
 	product_id int,
 	date timestamp,
-	primary key (user_id, product_id, date)
+	primary key (userid, product_id, date)
 );
 
 CREATE TABLE fydp.purchase_ind (
-    user_id text,
+    userid text,
 	product_id int,
 	compute_time timestamp,
 	purchase_ind double,
-	primary key (user_id, product_id, compute_time)
+	primary key (userid, product_id, compute_time)
 );
 
 CREATE TABLE fydp.shoppinglists (

@@ -25,6 +25,7 @@ public class Customer {
 	Map<Integer, Integer> productTabuMap;
 
 	public Customer(String customerID) {
+		System.out.println("INFO - Creating customer " + customerID);
 		groceryTracker = new ArrayList<BrandedGroceryItem>();
 		this.customerID = customerID;
 		predictedGroceryList = new ArrayList<BrandedGroceryItem>();
@@ -65,6 +66,7 @@ public class Customer {
 			int productID = inventory.getInt("product_id");
 
 			BrandedGroceryItem brandedGroceryItem = new BrandedGroceryItem(cassandraHelper.SelectProduct(productID));
+			brandedGroceryItem.inventory = (double) inventory.getLong("inventory");
 			groceryTracker.add(brandedGroceryItem);
 		}
 	}
@@ -88,6 +90,7 @@ public class Customer {
 			categoryBasedInd.put(item.GetCategory(), item);
 		}
 
+		System.out.println("INFO - user " + this.customerID + " adding item " + item.productID + " to predicted list");
 		predictedGroceryList.add(item);
 
 		// successfully added the item

@@ -24,12 +24,12 @@ public class CassandraHelper {
 	}
 
 	public Iterator<Row> SelectAllFromUser(String table, String customerID) {
-		Statement statement = QueryBuilder.select().all().from(table).where(QueryBuilder.eq("user_id", customerID));
+		Statement statement = QueryBuilder.select().all().from(table).where(QueryBuilder.eq("userid", customerID));
 		return session.execute(statement).iterator();
 	}
 
 	public Iterator<Row> SelectAllFromUserProduct(String table, String customerID, int productID) {
-		Statement statement = QueryBuilder.select().all().from(table).where(QueryBuilder.eq("user_id", customerID));
+		Statement statement = QueryBuilder.select().all().from(table).where(QueryBuilder.eq("userid", customerID)).and(QueryBuilder.eq("product_id", productID));
 		return session.execute(statement).iterator();
 	}
 
@@ -39,9 +39,9 @@ public class CassandraHelper {
 		return session.execute(statement).one();
 	}
 
-	public void InsertFromUserProduct(String table, String customerID, int productID, double value) {
-		Statement statement = QueryBuilder.insertInto(table).value("user_id", customerID).value("product_id", productID)
-				.value("s_ema", value);
+	public void InsertFromUserProduct(String table, String customerID, int productID, String column, double value) {
+		Statement statement = QueryBuilder.insertInto(table).value("userid", customerID).value("product_id", productID)
+				.value(column, value);
 		session.execute(statement);
 	}
 }
