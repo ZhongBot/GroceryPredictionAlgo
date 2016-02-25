@@ -327,4 +327,4 @@ insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwater
 insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 30, 1.0);
 
 -- satisfaction_current
-insert into fydp.satisfaction (userid, product_id, rating) values ('p8zhao@uwaterloo.ca', 1, 2.0);
+insert into fydp.satisfaction_current (userid, product_id, rating) values ('p8zhao@uwaterloo.ca', 1, 2.0);
