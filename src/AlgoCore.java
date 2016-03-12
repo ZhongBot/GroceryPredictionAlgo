@@ -247,10 +247,11 @@ public class AlgoCore {
 			return cSW;
 		}
 
-		System.out.println("INFO - customer " + customer.customerID + " product " + brandedGroceryItem.GetProductID()
-				+ " cSW " + cSW + " cHW " + cHW);
-
 		t = 0.5 * (cSW + cHW) * 2;
+
+		System.out.println("INFO - customer " + customer.customerID + " product " + brandedGroceryItem.GetProductID()
+				+ " cSW " + cSW + " cHW " + cHW + " t " + t);
+
 		return t;
 	}
 
@@ -274,6 +275,10 @@ public class AlgoCore {
 		if (satisfactionRowIter.hasNext()) {
 			Row satisfactionRow = satisfactionRowIter.next();
 			currentRating = satisfactionRow.getDouble("rating");
+
+			// process latest satisfaction
+			cassandraHelper.DeleteFromUserProduct("satisfaction_current", customer.GetCustomerID(),
+					brandedGroceryItem.GetProductID());
 		}
 
 		if (currentRating >= 0.0) {
@@ -294,6 +299,7 @@ public class AlgoCore {
 				s = sEMA;
 			}
 		} else {
+			// rating did not change
 			s = sEMA;
 		}
 		return s;
@@ -452,8 +458,9 @@ public class AlgoCore {
 
 				// items in c2 not in c2
 				c2GrocerySet.removeAll(c1GrocerySet);
-				
-				System.out.println("INFO - customer " + c1.customerID + " choose item from " + c2.customerID + " list " + c2GrocerySet.toString());
+
+				System.out.println("INFO - customer " + c1.customerID + " choose item from " + c2.customerID + " list "
+						+ c2GrocerySet.toString());
 				List<Integer> c2GroceryList = new ArrayList<Integer>(c2GrocerySet);
 				Collections.shuffle(c2GroceryList);
 
@@ -487,8 +494,14 @@ public class AlgoCore {
 
 		algoCore.CalcItemSimilarityIndex();
 
+		// continue while not terminated
 		while (signal == 0) {
 			for (Customer customer : algoCore.GetCustomerList()) {
+				if (customer.GetCustomerID() != "p8zhao@uwaterloo.ca") {
+					// demo only generate for single user
+					continue;
+				}
+
 				algoCore.CalcPurchaseInd(customer);
 				algoCore.ConstructHabitGroceryList(customer);
 				algoCore.ExploreApriori(customer);

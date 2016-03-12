@@ -1,48 +1,60 @@
 user fydp;
 
 -- users
-/*
 insert into fydp.users (userid, name, password, phone) values ('p8zhao@uwaterloo.ca', 'Kyle Zhao', 'AMarket123', '456454653');
 insert into fydp.users (userid, name, password, phone) values ('h86kim@uwaterloo.ca', 'Narane Narane', 'Bmarket321', '1234567890');
 insert into fydp.users (userid, name, password, phone) values ('bzhong@uwaterloo.ca', 'Botian Zhong', 'CMarket123', '2260000000');
-*/
+
 -- products
-/*
-insert into fydp.products (product_id, avg_price, brand, category, price) values (23, 350, 'Ruffles Sour Cream & Onion', 'Snacks', 375);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (5, 164, 'Spinach', 'Vegetables', 150);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (28, 900, 'Lamb Leg', 'Meat', 889);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (10, 699, 'Watermelon', 'Fruit', 599);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (16, 250, 'Dr.Pepper', 'Soft Drinks', 275);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (13, 400, 'Milk', 'Dairy', 349);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (30, 749, 'Tenderloin', 'Meat', 698);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (11, 149, 'Butter', 'Dairy', 299);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (1, 169, 'Broccoli', 'Vegetables', 199);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (19, 249, 'Sprite', 'Soft Drinks', 225);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (8, 370, 'Oranges', 'Fruit', 349);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (2, 349, 'Celery', 'Vegetables', 298);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (4, 319, 'Lettuce', 'Vegetables', 450);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (18, 199, 'Pepsi', 'Soft Drinks', 250);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (15, 199, 'Coca-Cola', 'Soft Drinks', 250);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (22, 230, 'Pringles', 'Snacks', 250);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (27, 539, 'Ham', 'Meat', 498);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (20, 420, 'Cheetos', 'Snacks', 399);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (7, 100, 'Bananas', 'Fruit',  99);
+
+insert into fydp.products (product_id, avg_price, brand, category, price) values (1, 169, 'Broccoli', 'Vegetable', 199);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (2, 349, 'Celery', 'Vegetable', 298);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (3, 89, 'Cucumber', 'Vegetable', 99);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (4, 319, 'Lettuce', 'Vegetable', 450);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (5, 164, 'Spinach', 'Vegetable', 150);
 insert into fydp.products (product_id, avg_price, brand, category, price) values (6, 149, 'Apples', 'Fruit', 299);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (29, 799, 'T-bone', 'Meat', 599);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (7, 100, 'Bananas', 'Fruit', 99);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (8, 370, 'Oranges', 'Fruit', 349);
 insert into fydp.products (product_id, avg_price, brand, category, price) values (9, 329, 'Pears', 'Fruit', 439);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (10, 699, 'Watermelon', 'Fruit', 599);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (11, 149, 'Butter', 'Dairy', 299);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (12, 189, 'Cheese', 'Dairy', 199);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (13, 400, 'Milk', 'Dairy', 349);
 insert into fydp.products (product_id, avg_price, brand, category, price) values (14, 510, 'Yogurt', 'Dairy', 489);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (26, 579, 'Chicken Breasts', 'Meat', 529);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (21, 320, 'Lay''s Salt & Vinegar', 'Snacks', 299);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (17, 249, 'Mountain Dew', 'Soft Drinks', 225);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (15, 199, 'Coca-Cola', 'Soft Drink', 250);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (16, 250, 'Dr. Pepper', 'Soft Drink', 275);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (17, 249, 'Mountain Dew', 'Soft Drink', 225);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (18, 199, 'Pepsi', 'Soft Drink', 250);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (19, 249, 'Sprite', 'Soft Drink', 225);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (20, 420, 'Cheetos', 'Snack', 399);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (21, 320, 'Lay''s Salt & Vinegar', 'Snack', 299);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (22, 230, 'Pringles', 'Snack', 250);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (23, 350, 'Ruffles Sour Cream & Onion', 'Snack', 375);
 insert into fydp.products (product_id, avg_price, brand, category, price) values (24, 379, 'Bacon', 'Meat', 369);
 insert into fydp.products (product_id, avg_price, brand, category, price) values (25, 698, 'Beef Rib', 'Meat', 550);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (12, 189, 'Cheese', 'Dairy', 199);
-insert into fydp.products (product_id, avg_price, brand, category, price) values (3, 89, 'Cucumber', 'Vegetables',  99);
-*/
+insert into fydp.products (product_id, avg_price, brand, category, price) values (26, 579, 'Chicken Breasts', 'Meat', 529);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (27, 539, 'Ham', 'Meat', 498);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (28, 900, 'Lamb Leg', 'Meat', 889);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (29, 799, 'T-bone', 'Meat', 599);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (30, 749, 'Tenderloin', 'Meat', 698);
+
+insert into fydp.products (product_id, avg_price, brand, category, price) values (797, 639, 'Head and Shoulders', 'Shampoo', 729);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (32, 649, 'Dove', 'Shampoo', 699);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (33, 589, 'Pantene', 'Shampoo', 549);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (34, 349, 'Colgate', 'Toothpaste', 369);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (35, 399, 'Crest', 'Toothpaste', 385);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (456, 189, 'Scotties', 'Facial Tissue', 219);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (37, 219, 'Kleenex', 'Facial Tissue', 249);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (38, 249, 'Royale', 'Facial Tissue', 249);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (866, 999, 'Cottonelle', 'Toilet Paper', 1049);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (40, 899, 'Charmin', 'Toilet Papaer', 949);
+insert into fydp.products (product_id, avg_price, brand, category, price) values (41, 849, 'Scott', 'Toilet Paper', 899);
+
+
+
 
 -- inventory
 truncate fydp.inventory;
-
 update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 1;
 update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 2;
 update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 3;
@@ -73,71 +85,19 @@ update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwate
 update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 28;
 update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 29;
 update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 30;
-
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 1;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 2;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 3;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 4;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 5;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 6;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 7;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 8;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 9;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 10;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 11;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 12;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 13;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 14;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 15;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 16;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 17;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 18;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 19;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 20;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 21;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 22;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 23;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 24;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 25;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 26;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 27;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 28;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 29;
-update fydp.inventory set inventory = inventory + 1 where userid = 'h86kim@uwaterloo.ca' and product_id = 30;
-
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 1;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 2;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 3;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 4;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 5;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 6;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 7;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 8;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 9;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 10;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 11;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 12;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 13;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 14;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 15;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 16;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 17;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 18;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 19;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 20;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 21;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 22;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 23;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 24;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 25;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 26;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 27;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 28;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 29;
-update fydp.inventory set inventory = inventory + 1 where userid = 'bzhong@uwaterloo.ca' and product_id = 30;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 797;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 32;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 33;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 34;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 35;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 456;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 37;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 38;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 866;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 40;
+update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 41;
 
 -- fydp.consumption
-
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 1, 100, 5);
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 2, 100, 5);
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 3, 100, 5);
@@ -168,69 +128,17 @@ insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchas
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 28, 100, 5);
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 29, 100, 5);
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 30, 100, 5);
-
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 1, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 2, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 3, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 4, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 5, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 6, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 7, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 8, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 9, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 10, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 11, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 12, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 13, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 14, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 15, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 16, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 17, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 18, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 19, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 20, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 21, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 22, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 23, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 24, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 25, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 26, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 27, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 28, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 29, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 30, 100, 5);
-
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 1, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 2, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 3, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 4, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 5, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 6, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 7, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 8, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 9, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 10, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 11, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 12, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 13, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 14, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 15, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 16, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 17, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 18, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 19, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 20, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 21, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 22, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 23, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 24, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 25, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 26, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 27, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 28, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 29, 100, 5);
-insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('h86kim@uwaterloo.ca', 30, 100, 5);
-
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 797, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 32, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 33, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 34, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 35, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 456, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 37, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 38, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 866, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 40, 100, 5);
+insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('bzhong@uwaterloo.ca', 41, 100, 5);
 
 -- satisfaction
 insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 1, 1.0);
@@ -263,68 +171,54 @@ insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwater
 insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 28, 1.0);
 insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 29, 1.0);
 insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 30, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 797, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 32, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 33, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 34, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 35, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 456, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 37, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 38, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 866, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 40, 1.0);
+insert into fydp.satisfaction (userid, product_id, s_ema) values ('bzhong@uwaterloo.ca', 41, 1.0);
 
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 1, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 2, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 3, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 4, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 5, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 6, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 7, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 8, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 9, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 10, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 11, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 12, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 13, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 14, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 15, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 16, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 17, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 18, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 19, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 20, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 21, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 22, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 23, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 24, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 25, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 26, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 27, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 28, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 29, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 30, 1.0);
-
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 1, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 2, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 3, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 4, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 5, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 6, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 7, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 8, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 9, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 10, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 11, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 12, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 13, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 14, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 15, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 16, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 17, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 18, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 19, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 20, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 21, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 22, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 23, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 24, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 25, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 26, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 27, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 28, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 29, 1.0);
-insert into fydp.satisfaction (userid, product_id, s_ema) values ('h86kim@uwaterloo.ca', 30, 1.0);
 
 -- satisfaction_current
-insert into fydp.satisfaction_current (userid, product_id, rating) values ('p8zhao@uwaterloo.ca', 1, 2.0);
+
+-- shoppinglists
+truncate fydp.shoppinglists;
+
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [1,4,7,10,13,17,22,24,27,30,797,35,456,866], '2015-08-17', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-09-11', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-09-22', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-10-03', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-11-03', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-11-27', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-12-22', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-01-04', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-01-19', 'p8zhao@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-02-10', 'p8zhao@uwaterloo.ca');
+
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-08-17', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-09-10', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-09-21', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-10-02', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-11-06', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-11-30', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-12-23', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-01-03', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-01-17', 'h86kim@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-02-12', 'h86kim@uwaterloo.ca');
+
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-08-19', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-09-09', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-09-19', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-10-05', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-11-03', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-11-39', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2015-12-24', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-01-07', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-01-25', 'bzhong@uwaterloo.ca');
+insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [], '2016-02-12', 'bzhong@uwaterloo.ca');
+

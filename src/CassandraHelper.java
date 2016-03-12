@@ -44,4 +44,9 @@ public class CassandraHelper {
 				.value(column, value);
 		session.execute(statement);
 	}
+	
+	public void DeleteFromUserProduct(String table, String customerID, int productID) {
+		Statement statement = QueryBuilder.delete().from(table).where(QueryBuilder.eq("userid", customerID)).and(QueryBuilder.eq("product_id", productID));
+		session.execute(statement);
+	}
 }
