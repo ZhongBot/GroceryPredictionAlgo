@@ -136,6 +136,7 @@ update fydp.inventory set inventory = inventory + 1 where userid = 'p8zhao@uwate
 --update fydp.inventory set inventory = inventory - 1 where userid = 'p8zhao@uwaterloo.ca' and product_id = 41;
 
 -- fydp.consumption
+truncate fydp.consumption;
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 1, 10, 2);
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 2, 10, 2);
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 3, 10, 2);
@@ -179,6 +180,7 @@ insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchas
 insert into fydp.consumption (userid, product_id, days_elapsed, quantity_purchased) values ('p8zhao@uwaterloo.ca', 41, 30, 2);
 
 -- satisfaction
+truncate fydp.satisfaction;
 insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 1, 1.0);
 insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 2, 1.0);
 insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwaterloo.ca', 3, 1.0);
@@ -223,6 +225,7 @@ insert into fydp.satisfaction (userid, product_id, s_ema) values ('p8zhao@uwater
 
 
 -- satisfaction_current
+truncate fydp.satisfaction_current;
 insert into fydp.satisfaction_current (userid, product_id, rating) values ('p8zhao@uwaterloo.ca', 1, 1.0);
 insert into fydp.satisfaction_current (userid, product_id, rating) values ('p8zhao@uwaterloo.ca', 2, 1.0);
 insert into fydp.satisfaction_current (userid, product_id, rating) values ('p8zhao@uwaterloo.ca', 3, 1.0);
@@ -282,7 +285,6 @@ insert into fydp.consumption_freq (userid, product_id, date) values ('p8zhao@uwa
 
 -- shoppinglists
 truncate fydp.shoppinglists;
-
 insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [1,2,6,8,13,17,20,25,28,797,35,456,866], '2015-08-17', 'p8zhao@uwaterloo.ca');
 insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [1,2,6,8,13,17,20,25,26,33,797,456,866], '2015-09-11', 'p8zhao@uwaterloo.ca');
 insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [1,6,8,10,13,14,20,25,28,456], '2015-09-22', 'p8zhao@uwaterloo.ca');
