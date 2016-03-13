@@ -1,4 +1,4 @@
-user fydp;
+use fydp;
 
 -- users
 insert into fydp.users (userid, name, password, phone) values ('p8zhao@uwaterloo.ca', 'Kyle Zhao', 'AMarket123', '456454653');
