@@ -216,22 +216,23 @@ public class AlgoCore {
 	}
 
 	public void CalcPurchaseInd(Customer customer) {
-		int groceryIndex = 0;
-		for (BrandedGroceryItem brandedGroceryItem : customer.GetGroceryTracker()) {
-			double inv = CalcInventory(customer, brandedGroceryItem, groceryIndex);
-			System.out.println("INFO - customer " + customer.customerID + " product "
+		for (int i = 0; i < customer.GetGroceryTracker().size(); i++) {
+			BrandedGroceryItem brandedGroceryItem = customer.GetGroceryTracker().get(i);
+
+			double inv = CalcInventory(customer, brandedGroceryItem, i);
+			System.out.println("INFO - customer " + customer.GetCustomerID() + " product "
 					+ brandedGroceryItem.GetProductID() + " inventory " + inv);
 			double t = CalcThreshold(customer, brandedGroceryItem);
-			System.out.println("INFO - customer " + customer.customerID + " product "
+			System.out.println("INFO - customer " + customer.GetCustomerID() + " product "
 					+ brandedGroceryItem.GetProductID() + " t " + t);
 			double s = CalcSatisfaction(customer, brandedGroceryItem);
-			System.out.println("INFO - customer " + customer.customerID + " product "
+			System.out.println("INFO - customer " + customer.GetCustomerID() + " product "
 					+ brandedGroceryItem.GetProductID() + " s " + s);
 			double l = CalcLoyalty(customer, brandedGroceryItem);
-			System.out.println("INFO - customer " + customer.customerID + " product "
+			System.out.println("INFO - customer " + customer.GetCustomerID() + " product "
 					+ brandedGroceryItem.GetProductID() + " l " + l);
 			double p = CalcPromotion(customer, brandedGroceryItem);
-			System.out.println("INFO - customer " + customer.customerID + " product "
+			System.out.println("INFO - customer " + customer.GetCustomerID() + " product "
 					+ brandedGroceryItem.GetProductID() + " p " + p);
 
 			double purchaseInd = 1 / Math.abs(inv - t) * s * (l + p);
@@ -242,9 +243,6 @@ public class AlgoCore {
 
 			System.out.println("INFO - customer " + customer.customerID + " product "
 					+ brandedGroceryItem.GetProductID() + " purchase indicator " + brandedGroceryItem.GetPurchaseInd());
-
-			groceryIndex++;
-
 		}
 	}
 
@@ -445,10 +443,20 @@ public class AlgoCore {
 			// if (item.GetPurchaseInd() > item.GetPurchaseBarrier()) {
 			// customer.AddGroceryItem(item);
 			// }
-			customer.AddGroceryItem(item);
+			boolean shouldPredict = true;
+			for (int productID: categoricalProductMap.get(item.GetCategory())) {
+				if (customer.GetBrandedGroceryItem(productID).GetInventory() >= 2) {
+					System.out.println("DEBUG - customer " + customer.GetCustomerID() + " has too much of "
+							+ item.GetCategory());
+					shouldPredict = false;
+				}
+			}
+			if (shouldPredict) {
+				customer.AddGroceryItem(item);
+			}
 		}
 
-		System.out.println("INFO - customer " + customer.getClass() + " habitual grocery list "
+		System.out.println("INFO - customer " + customer.GetCustomerID() + " habitual grocery list "
 				+ customer.GetPredictedGroceryList());
 
 	}
