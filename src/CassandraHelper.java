@@ -6,9 +6,7 @@ public class CassandraHelper {
 	public Cluster cluster;
 	public Session session;
 
-	public CassandraHelper() {
-		String contactPoint = "104.236.229.162";
-		String keyspace = "fydp";
+	public CassandraHelper(String contactPoint, String keyspace) {
 		cluster = Cluster.builder().addContactPoint(contactPoint).build();
 		session = cluster.connect(keyspace);
 	}

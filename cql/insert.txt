@@ -317,3 +317,5 @@ insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, useri
 insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [1,30,41,456,15,20], '2016-01-25', 'bzhong@uwaterloo.ca');
 insert into fydp.shoppinglists (sl_id, autogenerate, name, products, time, userid) values (now(), false, 'Weekly Grocery', [797,35,15,20,41,456], '2016-02-12', 'bzhong@uwaterloo.ca');
 
+-- purchase_ind
+truncate fydp.purchase_ind;

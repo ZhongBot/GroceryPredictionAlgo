@@ -1,6 +1,10 @@
 import java.beans.Customizer;
 import java.util.*;
 import java.util.Map.Entry;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import com.datastax.driver.core.*;
 import org.joda.time.DateTime;
@@ -11,7 +15,7 @@ import com.google.common.collect.*;
 
 public class AlgoCore {
 	// helper to access database
-	CassandraHelper cassandraHelper = new CassandraHelper();
+	CassandraHelper cassandraHelper;
 
 	// list of all customers
 	List<Customer> customerList = new ArrayList<Customer>();
@@ -34,18 +38,49 @@ public class AlgoCore {
 		}
 	}
 
+	public void InitializeCassandraHelper() {
+		String contactPoint = "";
+		String keyspace = "";
+		Properties properties = new Properties();
+		InputStream inputStream = null;
+
+		try {
+
+			inputStream = new FileInputStream("resources/config.properties");
+
+			// load a properties file
+			properties.load(inputStream);
+
+			// get the property values
+			contactPoint = properties.getProperty("database");
+			keyspace = properties.getProperty("keyspace");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		cassandraHelper = new CassandraHelper(contactPoint, keyspace);
+	}
+
 	public void InitializeProductMap() {
 		Customer customer = customerList.get(1);
 		for (Customer c : customerList) {
 			// System.out.println("DEBUG - customerID " + c.GetCustomerID());
 			if (c.GetCustomerID().equals(customer.GetCustomerID())) {
-				System.out.println("DEBUG - selected correct customer");
+				// System.out.println("DEBUG - selected correct customer");
 				customer = c;
 			}
 		}
 
-		System.out.println("DEBUG - customer " + customer.customerID + " groceryTracker "
-				+ customer.GetGroceryTracker().toString());
+		// System.out.println("DEBUG - customer " + customer.customerID + "
+		// groceryTracker "
+		// + customer.GetGroceryTracker().toString());
 
 		// get all product id for each category
 		for (BrandedGroceryItem item : customer.GetGroceryTracker()) {
@@ -202,7 +237,7 @@ public class AlgoCore {
 			double purchaseInd = 1 / Math.abs(inv - t) * s * (l + p);
 
 			brandedGroceryItem.SetPurchaseInd(purchaseInd);
-			
+
 			cassandraHelper.InsertPurchaseInd(customer.GetCustomerID(), brandedGroceryItem.GetProductID(), purchaseInd);
 
 			System.out.println("INFO - customer " + customer.customerID + " product "
@@ -505,6 +540,8 @@ public class AlgoCore {
 	public static void main(String[] args) {
 		int signal = 0;
 		AlgoCore algoCore = new AlgoCore();
+
+		algoCore.InitializeCassandraHelper();
 
 		algoCore.InitializeCustomerList();
 
