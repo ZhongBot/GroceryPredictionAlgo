@@ -43,11 +43,12 @@ public class CassandraHelper {
 				.value(column, value);
 		session.execute(statement);
 	}
-	
+
 	public void InsertPurchaseInd(String customerID, int productID, double purchaseInd) {
-		
-		Statement statement = QueryBuilder.insertInto("purchase_ind").value("userid", customerID).value("product_id", productID)
-				.value("purchase_ind", purchaseInd).value("compute_time", System.currentTimeMillis());
+
+		Statement statement = QueryBuilder.insertInto("purchase_ind").value("userid", customerID)
+				.value("product_id", productID).value("purchase_ind", purchaseInd)
+				.value("compute_time", System.currentTimeMillis());
 		session.execute(statement);
 	}
 

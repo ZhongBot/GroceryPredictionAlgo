@@ -67,9 +67,9 @@ public class BrandedGroceryItem {
 	public void SetPurchaseInd(double purchaseInd) {
 		this.purchaseInd = purchaseInd;
 	}
-	
+
 	@Override
 	public String toString() {
-	    return Integer.toString(this.productID);
+		return Integer.toString(this.productID);
 	}
 }

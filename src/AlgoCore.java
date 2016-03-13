@@ -388,8 +388,8 @@ public class AlgoCore {
 			l = (freq + p / 2) / (double) categoryCount;
 		}
 
-		System.out.println("INFO - customer " + customer.customerID + " product " + brandedGroceryItem.GetProductID()
-				+ " freq " + freq + " categoryCount " + categoryCount);
+		System.out.println("INFO - customer " + customer.GetCustomerID() + " product "
+				+ brandedGroceryItem.GetProductID() + " freq " + freq + " categoryCount " + categoryCount);
 
 		return l;
 	}
@@ -432,8 +432,8 @@ public class AlgoCore {
 		pb = avg + sd;
 		item.SetPurchaseBarrier(pb);
 
-		System.out.println("INFO - customer " + customer.customerID + " product " + item.productID + " purchase ind "
-				+ item.GetPurchaseInd() + " pb " + item.GetPurchaseBarrier());
+		System.out.println("INFO - customer " + customer.GetCustomerID() + " product " + item.productID
+				+ " purchase ind " + item.GetPurchaseInd() + " pb " + item.GetPurchaseBarrier());
 
 	}
 
@@ -448,7 +448,7 @@ public class AlgoCore {
 			customer.AddGroceryItem(item);
 		}
 
-		System.out.println("INFO - customer " + customer.customerID + " habitual grocery list "
+		System.out.println("INFO - customer " + customer.getClass() + " habitual grocery list "
 				+ customer.GetPredictedGroceryList());
 
 	}
@@ -457,7 +457,7 @@ public class AlgoCore {
 		Ordering<Map.Entry<ItemPair, Double>> similarityOrdering = new Ordering<Map.Entry<ItemPair, Double>>() {
 			@Override
 			public int compare(Entry<ItemPair, Double> arg0, Entry<ItemPair, Double> arg1) {
-				return arg0.getValue().compareTo(arg1.getValue());
+				return arg1.getValue().compareTo(arg0.getValue());
 			}
 		};
 
@@ -465,25 +465,31 @@ public class AlgoCore {
 
 		Collections.sort(similarityIndexList, similarityOrdering);
 
+		System.out.println("INFO - similarityIndexList " + similarityIndexList.toString());
+
 		for (Map.Entry<ItemPair, Double> itemPairEntry : similarityIndexList) {
-			if (customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP1())
-					&& !(customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP2()))) {
+			if (customer.GroceryListContains(itemPairEntry.getKey().GetP1())
+					&& !(customer.GroceryListContains(itemPairEntry.getKey().GetP2()))) {
 				if (customer.AddExploreGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP2()))) {
 					// successfully added new explore item
-					System.out.println("INFO - customer " + customer.customerID + " added apriori item "
+					System.out.println("INFO - customer " + customer.GetCustomerID() + " added apriori item "
 							+ itemPairEntry.getKey().GetP2());
+					System.out.println("INFO - customer " + customer.GetCustomerID() + " predictedGroceryList "
+							+ customer.GetPredictedGroceryList());
 					return;
 				}
 
-			} else if (customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP2())
-					&& !(customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP1()))) {
+			} else if (customer.GroceryListContains(itemPairEntry.getKey().GetP2())
+					&& !(customer.GroceryListContains(itemPairEntry.getKey().GetP1()))) {
 				if (customer.AddExploreGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP1()))) {
-					System.out.println("INFO - customer " + customer.customerID + " added apriori item "
+					System.out.println("INFO - customer " + customer.GetCustomerID() + " added Apriori item "
 							+ itemPairEntry.getKey().GetP1());
 					return;
 				}
 			}
 		}
+
+		System.out.println("INFO - did not explore with apriori item");
 	}
 
 	public void ExplorePSO(Customer c1) {
@@ -491,12 +497,17 @@ public class AlgoCore {
 		Random randGenerator = new Random();
 
 		// make a copy
-		Set<Integer> c1GrocerySet = c1.GetCompleteGrocerySet();
+		Set<Integer> c1GrocerySet = new HashSet<Integer>(c1.GetCompleteGrocerySet());
+		System.out.println("DEBUG - c1 set before " + c1GrocerySet);
 
 		for (Customer c2 : customerList) {
-			Set<Integer> c2GrocerySet = c2.GetCompleteGrocerySet();
+			if (c2.GetCustomerID().equals(c1.GetCustomerID())) {
+				continue;
+			}
 
-			if (c1.GetCustomerID() != c2.GetCustomerID()) {
+			Set<Integer> c2GrocerySet = new HashSet<Integer>(c2.GetCompleteGrocerySet());
+
+			if (!c1.GetCustomerID().equals(c2.GetCustomerID())) {
 				int s1 = c1GrocerySet.size();
 				int s2 = c2GrocerySet.size();
 
@@ -504,25 +515,37 @@ public class AlgoCore {
 				c1GrocerySet.retainAll(c2GrocerySet);
 
 				pr = 2.0 * c1GrocerySet.size() / (s1 + s2);
+
+				System.out.println("INFO - c1 " + c1.GetCustomerID() + " c2 " + c2.GetCustomerID() + " pr " + pr);
+
 			}
 
 			if (randGenerator.nextDouble() < pr) {
 				// reset grocery sets
-				c1GrocerySet = c1.GetCompleteGrocerySet();
-				c2GrocerySet = c2.GetCompleteGrocerySet();
+				c1GrocerySet = new HashSet<Integer>(c1.GetCompleteGrocerySet());
+				c2GrocerySet = new HashSet<Integer>(c2.GetCompleteGrocerySet());
+
+				System.out.println("DEBUG - c1 set " + c1GrocerySet + " c2 set " + c2GrocerySet);
 
 				// items in c2 not in c2
 				c2GrocerySet.removeAll(c1GrocerySet);
 
-				System.out.println("INFO - customer " + c1.customerID + " choose item from " + c2.customerID + " list "
-						+ c2GrocerySet.toString());
+				System.out.println("INFO - customer " + c1.GetCustomerID() + " choose item from " + c2.GetCustomerID()
+						+ " list " + c2GrocerySet.toString());
 				List<Integer> c2GroceryList = new ArrayList<Integer>(c2GrocerySet);
+
+				// random shuffle
 				Collections.shuffle(c2GroceryList);
 
+				// System.out.println("DEBUG - c2GroceryList " +
+				// c2GroceryList.toString());
+
 				// add a random item in c2 not in c1
-				if (c1.AddExploreGroceryItem(c1.GetBrandedGroceryItem(c2GroceryList.get(0)))) {
-					System.out.println("INFO - customer " + c1.customerID + " PSO item " + c2GroceryList.get(0));
-					return;
+				for (int i = 0; i < c2GroceryList.size(); i++) {
+					if (c1.AddExploreGroceryItem(c1.GetBrandedGroceryItem(c2GroceryList.get(i)))) {
+						System.out.println("INFO - customer " + c1.customerID + " PSO item " + c2GroceryList.get(0));
+						return;
+					}
 				}
 			}
 		}

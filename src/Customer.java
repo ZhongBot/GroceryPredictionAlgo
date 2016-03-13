@@ -155,6 +155,15 @@ public class Customer {
 		return null;
 	}
 
+	public boolean GroceryListContains(int productID) {
+		for (BrandedGroceryItem brandedGroceryItem : predictedGroceryList) {
+			if (brandedGroceryItem.GetProductID() == productID) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void InitializeGrocerySet() {
 		completeGrocerySet = new HashSet<Integer>(this.completeGroceryList);
 	}

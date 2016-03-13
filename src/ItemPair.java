@@ -34,9 +34,9 @@ public class ItemPair {
 
 		return 0;
 	}
-	
+
 	@Override
 	public String toString() {
-	    return this.p1 + "," + this.p2;
+		return this.p1 + "," + this.p2;
 	}
 }
