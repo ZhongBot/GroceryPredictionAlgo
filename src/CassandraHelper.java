@@ -29,7 +29,8 @@ public class CassandraHelper {
 	}
 
 	public Iterator<Row> SelectAllFromUserProduct(String table, String customerID, int productID) {
-		Statement statement = QueryBuilder.select().all().from(table).where(QueryBuilder.eq("userid", customerID)).and(QueryBuilder.eq("product_id", productID));
+		Statement statement = QueryBuilder.select().all().from(table).where(QueryBuilder.eq("userid", customerID))
+				.and(QueryBuilder.eq("product_id", productID));
 		return session.execute(statement).iterator();
 	}
 
@@ -45,8 +46,16 @@ public class CassandraHelper {
 		session.execute(statement);
 	}
 	
+	public void InsertPurchaseInd(String customerID, int productID, double purchaseInd) {
+		
+		Statement statement = QueryBuilder.insertInto("purchase_ind").value("userid", customerID).value("product_id", productID)
+				.value("purchase_ind", purchaseInd).value("compute_time", System.currentTimeMillis());
+		session.execute(statement);
+	}
+
 	public void DeleteFromUserProduct(String table, String customerID, int productID) {
-		Statement statement = QueryBuilder.delete().from(table).where(QueryBuilder.eq("userid", customerID)).and(QueryBuilder.eq("product_id", productID));
+		Statement statement = QueryBuilder.delete().from(table).where(QueryBuilder.eq("userid", customerID))
+				.and(QueryBuilder.eq("product_id", productID));
 		session.execute(statement);
 	}
 }

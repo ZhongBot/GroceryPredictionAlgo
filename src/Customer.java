@@ -68,6 +68,10 @@ public class Customer {
 			BrandedGroceryItem brandedGroceryItem = new BrandedGroceryItem(cassandraHelper.SelectProduct(productID));
 			brandedGroceryItem.inventory = (double) inventory.getLong("inventory");
 			groceryTracker.add(brandedGroceryItem);
+
+			// System.out.println("DEBUG - customer " + this.customerID + "
+			// groceryTracker " + groceryTracker.toString());
+
 		}
 	}
 
@@ -90,7 +94,25 @@ public class Customer {
 			categoryBasedInd.put(item.GetCategory(), item);
 		}
 
-		System.out.println("INFO - user " + this.customerID + " adding item " + item.productID + " to predicted list");
+		System.out.println(
+				"INFO - user " + this.customerID + " adding item " + item.productID + " to habit-based predicted list");
+		predictedGroceryList.add(item);
+
+		// successfully added the item
+		return true;
+	}
+
+	public boolean AddExploreGroceryItem(BrandedGroceryItem item) {
+
+		for (BrandedGroceryItem i : predictedGroceryList) {
+			if (i.GetProductID() == item.GetProductID()) {
+				// item already part of current list
+				return false;
+			}
+		}
+
+		System.out.println("INFO - user " + this.customerID + " adding item " + item.productID
+				+ " to explore-based predicted list");
 		predictedGroceryList.add(item);
 
 		// successfully added the item

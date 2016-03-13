@@ -1,3 +1,4 @@
+import java.beans.Customizer;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -34,8 +35,20 @@ public class AlgoCore {
 	}
 
 	public void InitializeProductMap() {
+		Customer customer = customerList.get(1);
+		for (Customer c : customerList) {
+			// System.out.println("DEBUG - customerID " + c.GetCustomerID());
+			if (c.GetCustomerID().equals(customer.GetCustomerID())) {
+				System.out.println("DEBUG - selected correct customer");
+				customer = c;
+			}
+		}
+
+		System.out.println("DEBUG - customer " + customer.customerID + " groceryTracker "
+				+ customer.GetGroceryTracker().toString());
+
 		// get all product id for each category
-		for (BrandedGroceryItem item : customerList.get(0).GetGroceryTracker()) {
+		for (BrandedGroceryItem item : customer.GetGroceryTracker()) {
 
 			if (categoricalProductMap.containsKey(item.GetCategory())) {
 				categoricalProductMap.get(item.GetCategory()).add(item.GetProductID());
@@ -186,9 +199,11 @@ public class AlgoCore {
 			System.out.println("INFO - customer " + customer.customerID + " product "
 					+ brandedGroceryItem.GetProductID() + " p " + p);
 
-			double purchaseInd = 1 / (inv - t) * s * (l + p);
+			double purchaseInd = 1 / Math.abs(inv - t) * s * (l + p);
 
 			brandedGroceryItem.SetPurchaseInd(purchaseInd);
+			
+			cassandraHelper.InsertPurchaseInd(customer.GetCustomerID(), brandedGroceryItem.GetProductID(), purchaseInd);
 
 			System.out.println("INFO - customer " + customer.customerID + " product "
 					+ brandedGroceryItem.GetProductID() + " purchase indicator " + brandedGroceryItem.GetPurchaseInd());
@@ -196,8 +211,6 @@ public class AlgoCore {
 			groceryIndex++;
 
 		}
-
-		// store purchase ind to database, update average, stdev
 	}
 
 	public double CalcInventory(Customer customer, BrandedGroceryItem brandedGroceryItem, int groceryIndex) {
@@ -229,16 +242,16 @@ public class AlgoCore {
 			Row cHWRow = cHWRowIter.next();
 
 			if (cHWCount == 0) {
-				startDate = new DateTime(cHWRow.getDate("timestamp"));
+				startDate = new DateTime(cHWRow.getDate("date"));
 			}
 
-			endDate = new DateTime(cHWRow.getDate("timestamp"));
+			endDate = new DateTime(cHWRow.getDate("date"));
 			cHWCount++;
 		}
 
 		d = (double) Days.daysBetween(startDate, endDate).getDays();
 		if (Double.compare(d, 0.0) != 0) {
-			cHW = cHWCount / d;
+			cHW = (cHWCount - 1) / d;
 		}
 
 		if (cSW == 0.0) {
@@ -277,8 +290,8 @@ public class AlgoCore {
 			currentRating = satisfactionRow.getDouble("rating");
 
 			// process latest satisfaction
-			cassandraHelper.DeleteFromUserProduct("satisfaction_current", customer.GetCustomerID(),
-					brandedGroceryItem.GetProductID());
+			cassandraHelper.InsertFromUserProduct("satisfaction_current", customer.GetCustomerID(),
+					brandedGroceryItem.GetProductID(), "rating", 1.0);
 		}
 
 		if (currentRating >= 0.0) {
@@ -356,41 +369,48 @@ public class AlgoCore {
 		}
 	}
 
+	public void CalcPurchaseBarrier(Customer customer, BrandedGroceryItem item) {
+		int totalCount = 0;
+		double total = 0.0;
+		double sqTotal = 0.0;
+		double avg = 0.0;
+		double var = 0.0;
+		double sd = 0.0;
+		double pb = 0.0;
+
+		Iterator<Row> purchaseIndRowIter = cassandraHelper.SelectAllFromUserProduct("purchase_ind",
+				customer.GetCustomerID(), item.GetProductID());
+
+		while (purchaseIndRowIter.hasNext()) {
+			Row purchaseIndRow = purchaseIndRowIter.next();
+			total += purchaseIndRow.getDouble("purhcase_ind");
+			sqTotal += Math.pow(purchaseIndRow.getDouble("purhcase_ind"), 2);
+			totalCount++;
+		}
+
+		if (totalCount > 0) {
+			avg = total / (double) totalCount;
+			var = sqTotal / totalCount - Math.pow(avg, 2);
+			sd = Math.sqrt(var);
+		}
+
+		pb = avg + sd;
+		item.SetPurchaseBarrier(pb);
+
+		System.out.println("INFO - customer " + customer.customerID + " product " + item.productID + " purchase ind "
+				+ item.GetPurchaseInd() + " pb " + item.GetPurchaseBarrier());
+
+	}
+
 	public void ConstructHabitGroceryList(Customer customer) {
 		for (BrandedGroceryItem item : customer.GetGroceryTracker()) {
-			Iterator<Row> purchaseIndRowIter = cassandraHelper.SelectAllFromUserProduct("purchase_ind",
-					customer.GetCustomerID(), item.GetProductID());
 
-			int totalCount = 0;
-			double total = 0.0;
-			double sqTotal = 0.0;
-			double avg = 0.0;
-			double var = 0.0;
-			double sd = 0.0;
-			double pb = 0.0;
-
-			while (purchaseIndRowIter.hasNext()) {
-				Row purchaseIndRow = purchaseIndRowIter.next();
-				total += purchaseIndRow.getDouble("purhcase_ind");
-				sqTotal += Math.pow(purchaseIndRow.getDouble("purhcase_ind"), 2);
-				totalCount++;
-			}
-
-			if (totalCount > 0) {
-				avg = total / (double) totalCount;
-				var = sqTotal / totalCount - Math.pow(avg, 2);
-				sd = Math.sqrt(var);
-			}
-
-			pb = avg + sd;
-			item.SetPurchaseBarrier(pb);
-
-			System.out.println("INFO - customer " + customer.customerID + " product " + item.productID
-					+ " purchase ind " + item.GetPurchaseInd() + " pb " + item.GetPurchaseBarrier());
-
-			if (item.GetPurchaseInd() > pb) {
-				customer.AddGroceryItem(item);
-			}
+			// CalcPurchaseBarrier(customer, item);
+			//
+			// if (item.GetPurchaseInd() > item.GetPurchaseBarrier()) {
+			// customer.AddGroceryItem(item);
+			// }
+			customer.AddGroceryItem(item);
 		}
 
 		System.out.println("INFO - customer " + customer.customerID + " habitual grocery list "
@@ -413,7 +433,7 @@ public class AlgoCore {
 		for (Map.Entry<ItemPair, Double> itemPairEntry : similarityIndexList) {
 			if (customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP1())
 					&& !(customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP2()))) {
-				if (customer.AddGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP2()))) {
+				if (customer.AddExploreGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP2()))) {
 					// successfully added new explore item
 					System.out.println("INFO - customer " + customer.customerID + " added apriori item "
 							+ itemPairEntry.getKey().GetP2());
@@ -422,7 +442,7 @@ public class AlgoCore {
 
 			} else if (customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP2())
 					&& !(customer.GetPredictedGroceryList().contains(itemPairEntry.getKey().GetP1()))) {
-				if (customer.AddGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP1()))) {
+				if (customer.AddExploreGroceryItem(customer.GetBrandedGroceryItem(itemPairEntry.getKey().GetP1()))) {
 					System.out.println("INFO - customer " + customer.customerID + " added apriori item "
 							+ itemPairEntry.getKey().GetP1());
 					return;
@@ -465,7 +485,7 @@ public class AlgoCore {
 				Collections.shuffle(c2GroceryList);
 
 				// add a random item in c2 not in c1
-				if (c1.AddGroceryItem(c1.GetBrandedGroceryItem(c2GroceryList.get(0)))) {
+				if (c1.AddExploreGroceryItem(c1.GetBrandedGroceryItem(c2GroceryList.get(0)))) {
 					System.out.println("INFO - customer " + c1.customerID + " PSO item " + c2GroceryList.get(0));
 					return;
 				}
@@ -497,7 +517,7 @@ public class AlgoCore {
 		// continue while not terminated
 		while (signal == 0) {
 			for (Customer customer : algoCore.GetCustomerList()) {
-				if (customer.GetCustomerID() != "p8zhao@uwaterloo.ca") {
+				if (!customer.GetCustomerID().equals("p8zhao@uwaterloo.ca")) {
 					// demo only generate for single user
 					continue;
 				}
