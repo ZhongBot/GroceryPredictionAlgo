@@ -104,6 +104,11 @@ public class AlgoCore {
 					customer.GetCustomerID());
 			while (groceryListRowIter.hasNext()) {
 				Row groceryListRow = groceryListRowIter.next();
+				
+				if (groceryListRow.getBool("autogenerate")) {
+					continue;
+				}
+				
 				customer.GetCompleteGroceryList().addAll(groceryListRow.getList("products", Integer.class));
 			}
 
@@ -128,6 +133,11 @@ public class AlgoCore {
 
 		while (groceryListRowIter.hasNext()) {
 			Row groceryListRow = groceryListRowIter.next();
+			
+			if (groceryListRow.getBool("autogenerate")) {
+				continue;
+			}
+			
 			for (int productID : groceryListRow.getList("products", Integer.class)) {
 				if (productFreqMap.containsKey(productID)) {
 					productFreqMap.put(productID, productFreqMap.get(productID) + 1);
@@ -160,6 +170,11 @@ public class AlgoCore {
 		groceryListRowIter = cassandraHelper.SelectAll("shoppinglists");
 		while (groceryListRowIter.hasNext()) {
 			Row groceryListRow = groceryListRowIter.next();
+			
+			if (groceryListRow.getBool("autogenerate")) {
+				continue;
+			}
+			
 			List<Integer> productList = groceryListRow.getList("products", Integer.class);
 
 			for (int p1 : productList) {
@@ -521,13 +536,13 @@ public class AlgoCore {
 			if (c2.GetCustomerID().equals(c1.GetCustomerID())) {
 				continue;
 			}
-			
+
 			// make copies
 			Set<Integer> c1GrocerySet = new HashSet<Integer>(c1.GetCompleteGrocerySet());
 			Set<Integer> c2GrocerySet = new HashSet<Integer>(c2.GetCompleteGrocerySet());
 
 			System.out.println("DEBUG - c1GrocerySet " + c1GrocerySet + " c2GrocerySet " + c2GrocerySet);
-			
+
 			if (!c1.GetCustomerID().equals(c2.GetCustomerID())) {
 				int s1 = c1GrocerySet.size();
 				int s2 = c2GrocerySet.size();
@@ -570,8 +585,8 @@ public class AlgoCore {
 					}
 
 					if (c1.AddExploreGroceryItem(c1.GetBrandedGroceryItem(psoID))) {
-						System.out.println("INFO - customer " + c1.customerID + " PSO item " + psoID);
-						System.out.println("INFO - customer " + c1.customerID + " final predicted grocery list "
+						System.out.println("INFO - customer " + c1.GetCustomerID() + " PSO item " + psoID);
+						System.out.println("INFO - customer " + c1.GetCustomerID() + " final predicted grocery list "
 								+ c1.GetPredictedGroceryList().toString());
 						return;
 					}
@@ -579,6 +594,18 @@ public class AlgoCore {
 			}
 		}
 
+	}
+
+	public void SubmitGroceryList(Customer customer) {
+		List<Integer> predictedGroceryList = new ArrayList<Integer>();
+		for (BrandedGroceryItem brandedGroceryItem : customer.GetPredictedGroceryList()) {
+			predictedGroceryList.add(brandedGroceryItem.GetProductID());
+		}
+
+		System.out.println("INFO - customer " + customer.GetCustomerID() + " saved predicted grocery list of "
+				+ predictedGroceryList.size() + " items");
+
+		cassandraHelper.InsertGroceryList(customer.GetCustomerID(), predictedGroceryList);
 	}
 
 	public List<Customer> GetCustomerList() {
@@ -615,6 +642,8 @@ public class AlgoCore {
 				algoCore.ConstructHabitGroceryList(customer);
 				algoCore.ExploreApriori(customer);
 				algoCore.ExplorePSO(customer);
+				algoCore.SubmitGroceryList(customer);
+
 				signal = 1;
 			}
 

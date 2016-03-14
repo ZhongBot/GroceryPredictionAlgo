@@ -52,6 +52,13 @@ public class CassandraHelper {
 		session.execute(statement);
 	}
 
+	public void InsertGroceryList(String customerID, List<Integer> productList) {
+		Statement statement = QueryBuilder.insertInto("shoppinglists").value("sl_id", QueryBuilder.uuid())
+				.value("time", System.currentTimeMillis()).value("userid", customerID)
+				.value("products", productList).value("name", "Predicted Grocery List").value("autogenerate", true);
+		session.execute(statement);
+	}
+
 	public void DeleteFromUserProduct(String table, String customerID, int productID) {
 		Statement statement = QueryBuilder.delete().from(table).where(QueryBuilder.eq("userid", customerID))
 				.and(QueryBuilder.eq("product_id", productID));
