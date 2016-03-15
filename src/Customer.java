@@ -111,6 +111,10 @@ public class Customer {
 			}
 		}
 
+		if (productTabuMap.containsKey(item.GetProductID()) && productTabuMap.get(item.GetProductID()) > 0) {
+			return false;
+		}
+
 		System.out.println("INFO - user " + this.customerID + " adding item " + item.productID
 				+ " to explore-based predicted list");
 		predictedGroceryList.add(item);
